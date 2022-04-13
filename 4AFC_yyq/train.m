@@ -42,7 +42,7 @@ gamma=0.25;  %随机猜测正确率 guess rate
 grain=0.01; %步长
 range=60; %检测范围
 % q=QuestCreate(log10(tGuess),log10(tGuessSd),pThreshold,beta,delta,gamma,grain,range);
-q=QuestCreate(tGuess,tGuessSd,pThreshold,beta,delta,gamma,grain,range,1);%plotIt=1,plot the psychometric function
+q=QuestCreate(tGuess,tGuessSd,pThreshold,beta,delta,gamma,grain,range,0);%plotIt=1,plot the psychometric function
 q.normalizePdf=1; % This adds a few ms per call to QuestUpdate, but otherwise the pdf will underflow after about 1000 trials.
 
 if animate
@@ -201,8 +201,8 @@ for trial=1:trial_num
     save(expname,'result');
     
     %每100trials休息并计算阈值
-    if mod(trial,10)==0
-        i=trial/10;
+    if mod(trial,100)==0
+        i=trial/100;
         t(i)=QuestMean(q);
         sd(i)=QuestSd(q);
         
@@ -223,7 +223,7 @@ for trial=1:trial_num
         end
     end
 end
-hold on
+figure();
 errorbar(1:i,t,sd,'o');
 %%
 % t=QuestMean(q);		% Recommended by Pelli (1989) and King-Smith et al. (1994). Still our favorite.
